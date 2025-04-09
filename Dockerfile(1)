@@ -1,0 +1,25 @@
+# Use a lightweight base image with Python
+FROM python:3.9-slim
+
+# Install required tools: gcc (for C), openjdk (for Java)
+RUN apt-get update && apt-get install -y \
+    gcc \
+    openjdk-17-jdk \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Copy all files (Python, C, Java)
+COPY . .
+
+# Install Flask
+RUN pip install --no-cache-dir flask
+
+# Expose Flask app port
+EXPOSE 8084
+
+# Start Flask server
+CMD ["python", "server.py"]
+
